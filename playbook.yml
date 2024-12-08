@@ -12,3 +12,5 @@
       tags: os
     - role: docker
       tags: docker
+    - role: traefik
+      tags: traefik

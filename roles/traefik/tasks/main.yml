@@ -1,0 +1,28 @@
+# code: language=ansible
+---
+
+# TODO: fix mode on recurse
+
+- name: "Create folders for Traefik"
+  ansible.builtin.file:
+    state: directory
+    path: "{{ item }}"
+    recurse: true
+    owner: "root"
+    group: "root"
+    mode: "0700"
+  loop:
+    - "{{ traefik_compose_folder }}"
+    - "{{ traefik_data_folder }}/letsencrypt/"
+
+- name: "Template Docker Compose file"
+  ansible.builtin.template:
+    src: "docker-compose.yml"
+    dest: "{{ traefik_compose_folder }}/docker-compose.yml"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+
+- name: "Start Docker Compose project"
+  community.docker.docker_compose_v2:
+    project_src: "{{ traefik_compose_folder }}"

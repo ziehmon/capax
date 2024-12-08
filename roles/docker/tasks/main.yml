@@ -40,7 +40,7 @@
 
 - name: "Template daemon config"
   ansible.builtin.template:
-    src: "daemon.json.j2"
+    src: "daemon.json"
     dest: "/etc/docker/daemon.json"
     group: "root"
     owner: "root"

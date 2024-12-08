@@ -1,0 +1,4 @@
+# code: language=ansible
+---
+traefik_compose_folder: "/srv/docker/compose/traefik"
+traefik_data_folder: "/srv/docker/volumes/traefik"
