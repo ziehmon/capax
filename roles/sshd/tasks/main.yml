@@ -3,6 +3,7 @@
 - name: "Disable DNS for SSHD"
   ansible.builtin.lineinfile:
     path: "/etc/ssh/sshd_config"
-    regexp: '^#UseDNS'
-    line: 'UseDNS no'
+    regexp: '^(#)?{{ item.option }}.*'
+    line: "{{ item.option }} {{ item.value }}"
+  loop: "{{ sshd_options }}"
   notify: "Restart sshd"

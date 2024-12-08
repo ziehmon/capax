@@ -1,0 +1,7 @@
+# code: language=ansible
+---
+sshd_options:
+  - { option: "UseDNS", value: "no" }
+  - { option: "PasswordAuthentication", value: "no" }
+  - { option: "PermitRootLogin", value: "prohibit-password" }
+  - { option: "X11Forwarding", value: "no" }

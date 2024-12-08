@@ -20,6 +20,10 @@
     create: true
     mode: "0644"
 
+- name: "Update APT cache"
+  ansible.builtin.apt:
+    update_cache: true
+
 - name: "Install telegraf package"
   ansible.builtin.apt:
     name: "telegraf"

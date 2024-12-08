@@ -1,0 +1,6 @@
+# code: language=ansible
+---
+- name: "Restart telegraf"
+  ansible.builtin.service:
+    name: "telegraf"
+    state: "restarted"
