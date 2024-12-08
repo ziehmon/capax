@@ -1,0 +1,41 @@
+name: Execute Deployment
+on:
+  push:
+    branches:
+      - main
+permissions: 
+  contents: read
+
+jobs:
+  install_dependencies:
+    uses: ./.github/workflows/install_dependencies.yml
+  
+  ansible_deployment:
+    runs-on: ubuntu-latest
+    needs: install_dependencies
+
+    steps:
+      - name: git_checkout
+        uses: actions/checkout@v4
+
+      - name: setup_cache
+        uses: actions/cache@v4
+        with:
+          path: ./.venv
+          key: venv-${{ hashFiles('poetry.lock') }}
+
+      - name: activate_venv
+        run: |
+          source ./.venv/bin/activate
+          echo PATH=$PATH >> $GITHUB_ENV
+
+      - name: import_ssh_key
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ./id_rsa
+          chmod 600 ./id_rsa
+
+      - name: ansible_playbook
+        run: > 
+          ansible-playbook playbook.yml 
+          --ssh-common-args '-o UserKnownHostsFile=./known_hosts'
+          --private-key ./id_rsa

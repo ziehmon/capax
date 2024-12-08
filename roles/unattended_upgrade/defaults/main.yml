@@ -1,0 +1,4 @@
+# code: language=ansible
+---
+unattended_upgrade_options:
+  - { option: "Unattended-Upgrade::Remove-Unused-Dependencies", value: "true" }

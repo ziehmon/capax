@@ -1,0 +1,14 @@
+# code: language=ansible
+---
+
+- name: "Deploy capax services"
+  hosts: all
+  roles:
+    - role: sshd
+      tags: os
+    - role: unattended_upgrade
+      tags: os
+    - role: telegraf
+      tags: os
+    - role: docker
+      tags: docker

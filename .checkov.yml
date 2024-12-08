@@ -1,0 +1,6 @@
+directory:
+  - ./
+quiet: true
+compact: true
+skip-check:
+  - CKV2_ANSIBLE_3

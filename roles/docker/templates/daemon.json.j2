@@ -1,0 +1,8 @@
+{
+  "registry-mirrors": ["{{ docker_registry_url }}"],
+  "log-driver": "local",
+  "log-opts": {
+    "max-size": "{{ docker_logrotate_max_size }}",
+    "max-file": "{{ docker_logrotate_max_file }}"
+  }
+}

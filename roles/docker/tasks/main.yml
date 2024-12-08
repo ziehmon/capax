@@ -1,0 +1,51 @@
+# code: language=ansible
+---
+
+- name: "Copy GPG key for APT source of Docker"
+  ansible.builtin.copy:
+    src: "files/docker.gpg"
+    dest: "/etc/apt/trusted.gpg.d/docker.gpg"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
+- name: "Add APT source for Docker"
+  ansible.builtin.lineinfile:
+    path: "/etc/apt/sources.list.d/docker.list"
+    regexp: '^deb'
+    line: >
+      deb [signed-by=/etc/apt/trusted.gpg.d/docker.gpg]
+      {{ docker_apt_mirror }}
+      {{ docker_apt_mirror_suite }}
+      stable
+    create: true
+    mode: "0644"
+
+- name: "Update APT cache"
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: "Install packages"
+  ansible.builtin.apt:
+    name: "docker-ce"
+    state: "present"
+  notify:
+    - "Restart docker"
+
+- name: "Add Telegraf user to docker group"
+  ansible.builtin.user:
+    name: "telegraf"
+    groups: "docker"
+  notify: "Restart telegraf"
+
+- name: "Template daemon config"
+  ansible.builtin.template:
+    src: "daemon.json.j2"
+    dest: "/etc/docker/daemon.json"
+    group: "root"
+    owner: "root"
+    mode: "0644"
+  notify: "Restart docker"
+
+- name: "Flush handlers"
+  ansible.builtin.meta: flush_handlers

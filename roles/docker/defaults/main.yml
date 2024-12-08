@@ -1,0 +1,7 @@
+# code: language=ansible
+---
+docker_apt_mirror: "https://download.docker.com/linux/debian"
+docker_apt_mirror_suite: "bookworm"
+docker_registry_url: "https://registry.hub.docker.com"
+docker_logrotate_max_size: "10m"
+docker_logrotate_max_file: 3

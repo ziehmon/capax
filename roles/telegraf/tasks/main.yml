@@ -1,0 +1,35 @@
+# code: language=ansible
+---
+- name: "Copy GPG key for APT source of Telegraf"
+  ansible.builtin.copy:
+    src: "files/influxdata.gpg"
+    dest: "/etc/apt/trusted.gpg.d/influxdata.gpg"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
+- name: "Add APT source for Telegraf"
+  ansible.builtin.lineinfile:
+    path: "/etc/apt/sources.list.d/influxdata.list"
+    regexp: '^deb'
+    line: >
+      deb [signed-by=/etc/apt/trusted.gpg.d/influxdata.gpg]
+      {{ telegraf_apt_mirror }}
+      stable
+      main
+    create: true
+    mode: "0644"
+
+- name: "Install telegraf package"
+  ansible.builtin.apt:
+    name: "telegraf"
+    state: "present"
+
+- name: "Template telegraf configuration"
+  ansible.builtin.template:
+    src: "telegraf.conf.j2"
+    dest: "/etc/telegraf/telegraf.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart telegraf"

@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "capax"
+version = "0.1.0"
+description = ""
+authors = ["Ziehmon <ziehmon@smtpd.de>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+ansible = ">=10.0,<11.0"
+# https://github.com/ansible/ansible-lint/discussions/2820#discussioncomment-4400380
+ansible-lint = { version = "*", markers = "platform_system != 'Windows'" }
+checkov = "^3.2.332"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
